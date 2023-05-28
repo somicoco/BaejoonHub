@@ -9,7 +9,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		int n = sc.nextInt();
-		int cnt = 0;
+		
 		int arr[] = new int[n];
 		
 		for(int i=0; i<n; i++) {
@@ -18,14 +18,16 @@ public class Main {
 		
 		Arrays.sort(arr);
 		
+		int cnt = 0;
+		int sum = 0;
 		
 		for(int i = 0; i<arr.length; i++) {
-			for(int j =0; j<=i; j++) {
-				cnt = cnt + arr[j];
-			}				
+			
+			sum += cnt + arr[i];
+			cnt += arr[i];
 			
 		}
-		System.out.println(cnt);
+		System.out.println(sum);
 		
 		
 		
