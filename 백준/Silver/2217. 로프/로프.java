@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Main {
@@ -19,13 +18,11 @@ public class Main {
         }
 
         Arrays.sort(arr);
-        int number = n;
         int max = arr[n-1];
         for (int i=0; i<n;i++){
-            if (max<arr[i]*number){
-                max = arr[i]*number;
+            if (max<arr[i]*(n-i)){
+                max = arr[i]*(n-i);
             }
-            number--;
         }
 
 
