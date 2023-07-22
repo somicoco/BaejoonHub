@@ -1,80 +1,78 @@
-import java.util.*;
- 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Main {
- 
     static int n;
-    static String s;
-    static char map[][];
-    static boolean visits[][];
-    static int dx[] = {-1,0,0,1};
-    static int dy[] = {0,1,-1,0};
- 
-    public static void main(String args[]) {
- 
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        map = new char[n+1][n+1];
-        visits = new boolean[n+1][n+1];
- 
-        for (int i=0; i<n; i++){
-            s = sc.next();
+    static Character[][] arr;
+    static Character[][] arr2;
+    static boolean[][] visited;
+    static int[] dy = {-1,1,0,0};
+    static int[] dx = {0,0,-1,1};
+    static int count = 0;
+
+    static int count2 = 0;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+         n = Integer.parseInt(br.readLine());
+        arr = new Character[n][n];
+        arr2 = new Character[n][n];
+
+        visited = new boolean[n][n];
+
+        for (int i=0;i<n; i++){
+            String s = br.readLine();
             for (int j=0; j<n; j++){
-                map[i][j] = s.charAt(j); 
-            }
-        }
- 
-      
-        int cnt = 0;
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(!visits[i][j]){
-                    dfs(i,j);
-                    cnt++;
+                arr[i][j] = s.charAt(j);
+                if (arr[i][j]=='R'||arr[i][j]=='G'){
+                    arr2[i][j] = 'R';
+                }else {
+                    arr2[i][j] = s.charAt(j);
                 }
             }
         }
-        int normal_cnt = cnt;
-        cnt=0;
-        visits = new boolean[n+1][n+1];
- 
-       
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(map[i][j]=='G'){
-                    map[i][j] = 'R'; 
+        for (int i=0;i<n; i++){
+            for (int j=0; j<n; j++){
+                if (visited[i][j]==false){
+                    visited[i][j] = true;
+                    dfs(i,j,arr[i][j],arr);
+                    count++;
                 }
             }
         }
-        //
- 
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(!visits[i][j]){
-                    dfs(i,j);
-                    cnt++;
+        visited = new boolean[n][n];
+
+        for (int i=0;i<n; i++){
+            for (int j=0; j<n; j++){
+                if (visited[i][j]==false){
+                    visited[i][j] = true;
+                    dfs(i,j,arr2[i][j],arr2);
+                    count2++;
                 }
             }
         }
-        int abnormal_cnt = cnt;
-        System.out.println(normal_cnt + " " + abnormal_cnt);
- 
+
+
+
+        System.out.println(count);
+        System.out.println(count2);
+
     }
- 
-    public static void dfs(int x, int y){
-        visits[x][y] = true;
-        char tmp_char = map[x][y]; // R
-        for(int i=0; i<4; i++){
-            int new_x = x+dx[i];
-            int new_y = y+dy[i];
- 
-            if (new_x<0 || new_y<0 || new_x>n || new_y>n){
+
+    static void dfs(int y, int x, Character color, Character[][] arr) {
+
+        for (int i=0; i<4; i++){
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
+            if (nextY<0||nextX<0||nextX>=n||nextY>=n||visited[nextY][nextX]==true||arr[nextY][nextX]!=color){
                 continue;
             }
- 
-            if (!visits[new_x][new_y] && map[new_x][new_y] == tmp_char){
-                dfs(new_x, new_y);
-            }
+            visited[nextY][nextX] = true;
+            dfs(nextY,nextX, color, arr);
+
+
+
         }
     }
-    
 }
