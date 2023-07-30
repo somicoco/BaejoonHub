@@ -1,85 +1,73 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int m, n, day;
-    static int dy[] = {0, 0, -1, 1};
-    static int dx[] = {-1, 1, 0, 0};
-    static int arr[][];
 
-    static Queue<int[]> queue = new LinkedList<>();
-    static boolean visited[][];
-
-
+    static int m,n;
+    static int[][] arr;
+    static boolean[][] visited;
+    static int[] dy = {-1,1,0,0};
+    static int[] dx = {0,0,-1,1};
+    static Queue<int[]> que = new LinkedList<>();
+    static int count;
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        m = Integer.parseInt(st.nextToken()); //가로
-        n = Integer.parseInt(st.nextToken()); //세로
+
+        m = Integer.parseInt(st.nextToken()); //6
+        n = Integer.parseInt(st.nextToken()); //4
         arr = new int[n][m];
         visited = new boolean[n][m];
-        for (int i = 0; i < n; i++) {
+        for(int i=0;i<n;i++){
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < m; j++) {
+            for(int j=0;j<m;j++){
                 arr[i][j] = Integer.parseInt(st.nextToken());
-                if (arr[i][j] == 1) {
-                    queue.add(new int[]{i, j});
+                if(arr[i][j]==1){
+                    que.add(new int[]{i,j});
                 }
             }
         }
-        System.out.println(dfs());
-
-
+        bfs();
+        if(count !=-1){
+            System.out.println(count-1);
+        }
+        else{
+            System.out.println(count);
+        }
     }
+    static void bfs(){
+        while (!que.isEmpty()){
+            int[] a = que.poll();
+            for(int i=0;i<4;i++){
+                int nexty = a[0] + dy[i];
+                int nextx = a[1] + dx[i];
 
-    private static int dfs() {
-        while (!queue.isEmpty()) {
-            int[] temp = queue.poll();
-            int y = temp[0];
-            int x = temp[1];
-            for (int i = 0; i < 4; i++) {
-                int nextY = y + dy[i];
-                int nextX = x + dx[i];
-                if (nextX < 0 || nextY < 0 || nextY >= n || nextX >= m) {
+                if(nextx<0||nexty<0||nexty>=n||nextx>=m||visited[nexty][nextx]||arr[nexty][nextx]==1||arr[nexty][nextx]==-1){
                     continue;
                 }
-                if (arr[nextY][nextX] == 0) {
-                    arr[nextY][nextX] = arr[y][x] + 1;
-                    queue.add(new int[]{nextY, nextX
-                    });
-                }
+                visited[nexty][nextx] = true;
+                arr[nexty][nextx] = arr[a[0]][a[1]]+1;
+                que.add(new int[]{nexty,nextx});
             }
         }
         int max = Integer.MIN_VALUE;
-        if (checkZero()) {
-            return -1;
-        } else {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    if (max < arr[i][j]) {
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(arr[i][j]==0){
+                    count = -1;
+                    return;
+                }
+                else{
+                    if(arr[i][j]>max){
                         max = arr[i][j];
+                        count = arr[i][j];
                     }
                 }
             }
-
-            return max - 1;
         }
-
-
-    }
-
-    private static boolean checkZero() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (arr[i][j] == 0)
-                    return true;
-            }
-        }
-        return false;
     }
 }
