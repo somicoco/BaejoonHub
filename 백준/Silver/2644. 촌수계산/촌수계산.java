@@ -32,7 +32,7 @@ public class Main {
        cnt = 0;
 
 
-       dfs(x,y,cnt);
+       dfs(x,cnt);
 
 
         System.out.println(find==true?result:-1);
@@ -40,16 +40,16 @@ public class Main {
 
 
     }
-    static void dfs(int start, int end, int cnt){
+    static void dfs(int start,  int cnt){
         visited[start]=true;
-        if (start == end){
+        if (start == y){
             find = true;
             result = cnt;
         }
         else {
             for (int i = 1; i<arr.length;i++){
                 if (!visited[i]&&arr[start][i]==1){
-                    dfs(i,end,cnt+1);
+                    dfs(i,cnt+1);
 
                 }
             }
