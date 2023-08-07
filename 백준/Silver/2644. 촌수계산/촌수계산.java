@@ -49,9 +49,7 @@ public class Main {
         else {
             for (int i = 1; i<arr.length;i++){
                 if (!visited[i]&&arr[start][i]==1){
-                    visited[i] = true;
                     dfs(i,end,cnt+1);
-                    visited[i] = false;
 
                 }
             }
