@@ -1,10 +1,13 @@
-A = input()
-A = int(A)
+year = int(input())
+result = False
 
-if A%4==0:
-    if A%100!=0 or A%400==0:
-        print(1)
-    else:
-        print(0)
+if year % 4 == 0:
+    if year % 100 != 0 or year % 400 == 0:
+        result = True
+else:
+    result = False
+
+if result:
+    print(1)
 else:
     print(0)
